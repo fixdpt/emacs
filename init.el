@@ -10,29 +10,43 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ac-auto-start 1)
- '(ac-modes (quote (emacs-lisp-mode
-		    erlang-mode
-		    erlang-shell-mode 
-		    c-mode 
-		    cc-mode 
-		    c++-mode 
-		    go-mode
-		    haskell-mode
-		    inferior-haskell-mode
-		    java-mode 
-		    makefile-mode 
-		    ocaml-mode 
-		    python-mode 
-		    tuareg-mode)))
+ '(ac-modes
+   (quote
+    (text-mode
+     promela-mode
+     cider-mode
+     emacs-lisp-mode
+     clojure-mode
+     erlang-mode
+     erlang-shell-mode
+     c-mode
+     go-mode
+     cc-mode
+     c++-mode
+     cmake-mode
+     makefile-mode
+     sml-mode
+     rust-mode
+     inferior-sml-mode
+     ocaml-mode
+     tuareg-mode)))
+ '(custom-safe-themes
+   (quote
+    ("6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "9eb5269753c507a2b48d74228b32dcfbb3d1dbfd30c66c0efed8218d28b8f0dc" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" default)))
+ '(exec-path
+   (quote
+    ("/usr/bin"
+     "/bin"
+     "/usr/sbin"
+     "/sbin"
+     "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9"
+     "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9"
+     "/Applications/Emacs.app/Contents/MacOS/libexec"
+     "/Applications/Emacs.app/Contents/MacOS/bin"
+     "/usr/local/bin"
+     "/Users/gb/go/bin"))))
 
- '(custom-safe-themes (quote ("6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "9eb5269753c507a2b48d74228b32dcfbb3d1dbfd30c66c0efed8218d28b8f0dc" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" default))))
 ;; -----------------------------------------------------------------------------
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
 ;; *****************************************************************************
 ;; Basics
@@ -72,15 +86,14 @@ If the new path's directories does not exist, create them."
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
-
 ;; *****************************************************************************
 ;; Elpa 
 ;; *****************************************************************************
 (require 'package)
 
 (setq package-archives '(("elpa" . "http://elpa.gnu.org/packages/")
-                           ("marmalade" . "http://marmalade-repo.org/packages/")
-                           ("melpa" . "http://melpa.milkbox.net/packages/")))
+			 ("marmalade" . "https://marmalade-repo.org/packages/")
+			 ("melpa" . "http://melpa.org/packages/")))
 
 (package-initialize)
 
@@ -94,12 +107,16 @@ If the new path's directories does not exist, create them."
                       markdown-mode 
 		      ggtags
 		      erlang 
-		      go-mode
-		      haskell-mode
 		      soft-charcoal-theme
 		      ack-and-a-half 
                       auto-complete 
-		      tuareg 
+		      tuareg
+		      rust-mode
+		      go-mode
+		      go-autocomplete
+		      go-eldoc
+		      sml-mode
+		      yasnippet
 		      evil 
 		      smart-mode-line)
   "A list of packages to ensure are installed at launch.")
@@ -115,7 +132,7 @@ If the new path's directories does not exist, create them."
 (evil-mode)
 (sml/setup)
 (sml/apply-theme 'dark) 
-(projectile-global-mode)
+(yas-global-mode)
 
 ;; Autocomplete ----------------------------------------------------------------
 (require 'auto-complete-config)
@@ -150,6 +167,15 @@ If the new path's directories does not exist, create them."
   (show-paren-mode)
   (rainbow-delimiters-mode))
 
+;; Rust
+(add-hook 'rust-mode-hook 'common-hooks)
+
+;; Go
+(add-hook 'go-mode-hook 'common-hooks)
+(add-hook 'go-mode-hook 'go-eldoc-setup)
+(require 'go-autocomplete)
+(require 'auto-complete-config)
+
 ;; Ocaml -----------------------------------------------------------------------
 ;; opam
 (setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
@@ -182,18 +208,15 @@ If the new path's directories does not exist, create them."
  (autopair-mode)
  (rainbow-delimiters-mode))
 
-;; Go --------------------------------------------------------------------------
-(require 'go-autocomplete)
-(require 'auto-complete-config)
-(add-hook 'go-mode-hook 'common-hooks)
+;; Sml -------------------------------------------------------------------------
+(add-hook 'sml-mode-hook 'common-hooks)
+(add-hook 'inferior-sml-mode-hook 'common-hooks)
+(defun sml-hooks()
+  (local-set-key (kbd "M-e") 'sml-prog-proc-send-buffer))
+(add-hook 'sml-mode-hook 'sml-hooks)
 
-;; Haskell ---------------------------------------------------------------------
-(defun haskell-hooks()
-  (local-set-key (kbd "M-e") 'inferior-haskell-load-file))
-(add-hook 'haskell-mode-hook 'common-hooks)
-(add-hook 'haskell-mode-hook 'haskell-hooks)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
-(add-hook 'inferior-haskell-mode-hook 'common-hooks)
+;; Clojure
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 
 ;; C ---------------------------------------------------------------------------
 (setq c-default-style "linux" c-basic-offset 4)
@@ -206,17 +229,19 @@ If the new path's directories does not exist, create them."
 (add-hook 'c-mode-common-hook 'common-hooks)
 (add-hook 'c-mode-common-hook 'c-hooks)
 
-;; Python -----------------------------------------------------------------------
-(setq python-shell-interpreter "python3.4")
-(defun python-hooks()
-  (local-set-key (kbd "M-e") 'python-shell-send-buffer))
-  
-(add-hook 'python-mode-hook 'common-hooks)
-(add-hook 'python-mode-hook 'python-hooks)
-
 ;; Erlang ----------------------------------------------------------------------
 (add-hook 'erlang-mode-hook 'common-hooks)
 (add-hook 'erlang-shell-mode-hook 'common-hooks)
+
+;; Spin
+(add-to-list 'load-path "~/.emacs.d/no-elpa/promela-mode")
+(require 'promela-mode)
+(add-to-list 'auto-mode-alist '("\\.pml\\'" . promela-mode))
+(defun promela-hooks() 
+  (highlight-symbol-mode)
+  (show-paren-mode)
+  (rainbow-delimiters-mode))
+(add-hook 'promela-mode-hook 'promela-hooks)
 
 ;; *****************************************************************************
 ;; Keybindings 
@@ -246,3 +271,5 @@ If the new path's directories does not exist, create them."
 (global-unset-key (kbd "M-3"))
 (global-set-key (kbd "M-3") '(lambda() (interactive) (insert-string "#")))
 ;; -----------------------------------------------------------------------------
+
+(set-keyboard-coding-system nil)
