@@ -13,7 +13,6 @@
  '(ac-modes
    (quote
     (text-mode
-     promela-mode
      cider-mode
      emacs-lisp-mode
      clojure-mode
@@ -33,18 +32,7 @@
  '(custom-safe-themes
    (quote
     ("6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "9eb5269753c507a2b48d74228b32dcfbb3d1dbfd30c66c0efed8218d28b8f0dc" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" default)))
- '(exec-path
-   (quote
-    ("/usr/bin"
-     "/bin"
-     "/usr/sbin"
-     "/sbin"
-     "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9"
-     "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9"
-     "/Applications/Emacs.app/Contents/MacOS/libexec"
-     "/Applications/Emacs.app/Contents/MacOS/bin"
-     "/usr/local/bin"
-     "/Users/gb/go/bin"))))
+ )
 
 ;; -----------------------------------------------------------------------------
 
@@ -234,14 +222,14 @@ If the new path's directories does not exist, create them."
 (add-hook 'erlang-shell-mode-hook 'common-hooks)
 
 ;; Spin
-(add-to-list 'load-path "~/.emacs.d/no-elpa/promela-mode")
-(require 'promela-mode)
-(add-to-list 'auto-mode-alist '("\\.pml\\'" . promela-mode))
-(defun promela-hooks() 
-  (highlight-symbol-mode)
-  (show-paren-mode)
-  (rainbow-delimiters-mode))
-(add-hook 'promela-mode-hook 'promela-hooks)
+;; (add-to-list 'load-path "~/.emacs.d/no-elpa/promela-mode")
+;; (require 'promela-mode)
+;; (add-to-list 'auto-mode-alist '("\\.pml\\'" . promela-mode))
+;; (defun promela-hooks() 
+;;   (highlight-symbol-mode)
+;;   (show-paren-mode)
+;;   (rainbow-delimiters-mode))
+;; (add-hook 'promela-mode-hook 'promela-hooks)
 
 ;; *****************************************************************************
 ;; Keybindings 
@@ -267,7 +255,7 @@ If the new path's directories does not exist, create them."
 ;; -----------------------------------------------------------------------------
 (setq mac-option-modifier 'super)
 (setq mac-command-modifier 'meta)
-(set-face-attribute 'default nil :height 200)
+(set-face-attribute 'default nil :height 160)
 (global-unset-key (kbd "M-3"))
 (global-set-key (kbd "M-3") '(lambda() (interactive) (insert-string "#")))
 ;; -----------------------------------------------------------------------------
