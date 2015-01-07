@@ -34,6 +34,7 @@
    (quote
     ("6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "9eb5269753c507a2b48d74228b32dcfbb3d1dbfd30c66c0efed8218d28b8f0dc" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" default)))
  )
+(setenv "PATH" (getenv "PATH"))
 
 ;; -----------------------------------------------------------------------------
 
@@ -91,6 +92,7 @@ If the new path's directories does not exist, create them."
 
 (defvar my-packages '(magit 
 		      autopair 
+		      exec-path-from-shell
                       rainbow-delimiters 
 		      highlight-symbol
                       markdown-mode 
@@ -114,6 +116,8 @@ If the new path's directories does not exist, create them."
   (when (not (package-installed-p p))
     (package-install p)))
 
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
 ;; *****************************************************************************
 ;; Configurations
 ;; *****************************************************************************
@@ -159,7 +163,7 @@ If the new path's directories does not exist, create them."
 ;; coq -------------------------------------------------------------------------
 (load-file "~/.emacs.d/no-elpa/ProofGeneral/generic/proof-site.el")
 (setq proof-splash-enable nil)
-(setq coq-prog-name "/usr/local/bin/coqtop")
+(setq coq-prog-name "/usr/local/bin/coqtop") 
 (defun coq-hooks()
   (local-set-key (kbd "M-e") 'proof-goto-point))
 (add-hook 'coq-mode-hook 'common-hooks)
@@ -267,7 +271,18 @@ If the new path's directories does not exist, create them."
 ;; -----------------------------------------------------------------------------
 (setq mac-option-modifier 'super)
 (setq mac-command-modifier 'meta)
-(set-face-attribute 'default nil :height 160)
+(cond
+ ((string-equal system-type "darwin")   
+  (progn
+    (set-face-attribute 'default nil :height 200)
+    )
+  )
+ ((string-equal system-type "gnu/linux") 
+  (progn
+    (set-face-attribute 'default nil :height 160)
+    )
+  )
+ )
 (global-unset-key (kbd "M-3"))
 (global-set-key (kbd "M-3") '(lambda() (interactive) (insert-string "#")))
 ;; -----------------------------------------------------------------------------
