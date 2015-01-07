@@ -19,6 +19,7 @@
      erlang-mode
      erlang-shell-mode
      c-mode
+     coq-mode
      go-mode
      cc-mode
      c++-mode
@@ -154,6 +155,17 @@ If the new path's directories does not exist, create them."
   (autopair-mode)
   (show-paren-mode)
   (rainbow-delimiters-mode))
+
+;; coq -------------------------------------------------------------------------
+(load-file "~/.emacs.d/no-elpa/ProofGeneral/generic/proof-site.el")
+(setq proof-splash-enable nil)
+(setq coq-prog-name "/usr/local/bin/coqtop")
+(defun coq-hooks()
+  (local-set-key (kbd "M-e") 'proof-goto-point))
+(add-hook 'coq-mode-hook 'common-hooks)
+(add-hook 'coq-mode-hook 'coq-hooks)
+;; -----------------------------------------------------------------------------
+
 
 ;; Rust
 (add-hook 'rust-mode-hook 'common-hooks)
