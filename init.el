@@ -25,6 +25,7 @@
      c++-mode
      cmake-mode
      makefile-mode
+     markdown-mode
      sml-mode
      rust-mode
      inferior-sml-mode
@@ -170,6 +171,8 @@ If the new path's directories does not exist, create them."
 (add-hook 'coq-mode-hook 'coq-hooks)
 ;; -----------------------------------------------------------------------------
 
+;; markdown
+(add-hook 'markdown-mode-hook 'common-hooks)
 
 ;; Rust
 (add-hook 'rust-mode-hook 'common-hooks)
