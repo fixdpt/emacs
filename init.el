@@ -13,21 +13,16 @@
  '(ac-modes
    (quote
     (text-mode
-     cider-mode
      emacs-lisp-mode
-     clojure-mode
      erlang-mode
      erlang-shell-mode
      c-mode
-     coq-mode
-     go-mode
      cc-mode
      c++-mode
      cmake-mode
      makefile-mode
      markdown-mode
      sml-mode
-     rust-mode
      inferior-sml-mode
      ocaml-mode
      tuareg-mode)))
@@ -100,13 +95,8 @@ If the new path's directories does not exist, create them."
 		      ggtags
 		      erlang 
 		      soft-charcoal-theme
-		      ack-and-a-half 
                       auto-complete 
 		      tuareg
-		      rust-mode
-		      go-mode
-		      go-autocomplete
-		      go-eldoc
 		      sml-mode
 		      yasnippet
 		      evil 
@@ -161,59 +151,40 @@ If the new path's directories does not exist, create them."
   (show-paren-mode)
   (rainbow-delimiters-mode))
 
-;; coq -------------------------------------------------------------------------
-(load-file "~/.emacs.d/no-elpa/ProofGeneral/generic/proof-site.el")
-(setq proof-splash-enable nil)
-(setq coq-prog-name "/usr/local/bin/coqtop") 
-(defun coq-hooks()
-  (local-set-key (kbd "M-e") 'proof-goto-point))
-(add-hook 'coq-mode-hook 'common-hooks)
-(add-hook 'coq-mode-hook 'coq-hooks)
-;; -----------------------------------------------------------------------------
-
 ;; markdown
 (add-hook 'markdown-mode-hook 'common-hooks)
 
-;; Rust
-(add-hook 'rust-mode-hook 'common-hooks)
-
-;; Go
-(add-hook 'go-mode-hook 'common-hooks)
-(add-hook 'go-mode-hook 'go-eldoc-setup)
-(require 'go-autocomplete)
-(require 'auto-complete-config)
-
 ;; Ocaml -----------------------------------------------------------------------
 ;; opam
-(setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
-(add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-
-;; utop
-(require 'utop)
-(autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
-(add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)
-(add-hook 'typerex-mode-hook 'utop-setup-ocaml-buffer)
-
-;; ocp-indent
-(require 'ocp-indent)
-(defun ocp-indent-buffer ()
-  (interactive nil)
-  (ocp-indent-region (point-min) (point-max)))
-
-(defun ocaml-hooks()
-  (local-set-key (kbd "M-e") 'tuareg-eval-buffer)
-  (local-set-key (kbd "M-/") 'utop-edit-complete)
-  (local-set-key (kbd "M-q") 'ocp-indent-buffer))
-
-(add-hook 'utop-mode-hook 'repl-hooks)
-(add-hook 'tuareg-mode-hook 'common-hooks)
-(add-hook 'tuareg-mode-hook 'ocaml-hooks)
-(add-hook 'tuareg-mode-hook 'common-hooks)
-
-(defun repl-hooks()
- (highlight-symbol-mode)
- (autopair-mode)
- (rainbow-delimiters-mode))
+;;(setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
+;;(add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+;;
+;;;; utop
+;;(require 'utop)
+;;(autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
+;;(add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)
+;;(add-hook 'typerex-mode-hook 'utop-setup-ocaml-buffer)
+;;
+;;;; ocp-indent
+;;(require 'ocp-indent)
+;;(defun ocp-indent-buffer ()
+;;  (interactive nil)
+;;  (ocp-indent-region (point-min) (point-max)))
+;;
+;;(defun ocaml-hooks()
+;;  (local-set-key (kbd "M-e") 'tuareg-eval-buffer)
+;;  (local-set-key (kbd "M-/") 'utop-edit-complete)
+;;  (local-set-key (kbd "M-q") 'ocp-indent-buffer))
+;;
+;;(add-hook 'utop-mode-hook 'repl-hooks)
+;;(add-hook 'tuareg-mode-hook 'common-hooks)
+;;(add-hook 'tuareg-mode-hook 'ocaml-hooks)
+;;(add-hook 'tuareg-mode-hook 'common-hooks)
+;;
+;;(defun repl-hooks()
+;; (highlight-symbol-mode)
+;; (autopair-mode)
+;; (rainbow-delimiters-mode))
 
 ;; Sml -------------------------------------------------------------------------
 (add-hook 'sml-mode-hook 'common-hooks)
