@@ -10,26 +10,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ac-auto-start 1)
- '(ac-modes
-   (quote
-    (text-mode
-     emacs-lisp-mode
-     erlang-mode
-     erlang-shell-mode
-     c-mode
-     cc-mode
-     c++-mode
-     cmake-mode
-     makefile-mode
-     markdown-mode
-     sml-mode
-     inferior-sml-mode
-     ocaml-mode
-     tuareg-mode)))
- '(custom-safe-themes
-   (quote
-    ("6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "9eb5269753c507a2b48d74228b32dcfbb3d1dbfd30c66c0efed8218d28b8f0dc" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" default)))
- )
+ '(ac-modes (quote (text-mode emacs-lisp-mode erlang-mode erlang-shell-mode c-mode cc-mode c++-mode cmake-mode makefile-mode markdown-mode sml-mode inferior-sml-mode ocaml-mode tuareg-mode)))
+ '(clang-format-executable "clang-format-3.5")
+ '(clang-format-style "google")
+ '(custom-safe-themes (quote ("6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "9eb5269753c507a2b48d74228b32dcfbb3d1dbfd30c66c0efed8218d28b8f0dc" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" default))))
 
 ;; -----------------------------------------------------------------------------
 
@@ -96,6 +80,7 @@ If the new path's directories does not exist, create them."
 		      soft-charcoal-theme
                       auto-complete 
 		      tuareg
+		      clang-format
 		      sml-mode
 		      yasnippet
 		      evil 
@@ -108,6 +93,7 @@ If the new path's directories does not exist, create them."
 
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
+
 ;; *****************************************************************************
 ;; Configurations
 ;; *****************************************************************************
@@ -196,11 +182,13 @@ If the new path's directories does not exist, create them."
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 
 ;; C ---------------------------------------------------------------------------
+(require 'clang-format)
 (setq c-default-style "linux" c-basic-offset 4)
 
 (defun c-hooks()
   (c-set-offset 'arglist-intro '+)	; aligns args split across lines
   (ggtags-mode)
+  (local-set-key (kbd "M-q") 'clang-format-buffer)
 )
 
 (add-hook 'c-mode-common-hook 'common-hooks)
@@ -259,5 +247,3 @@ If the new path's directories does not exist, create them."
 (global-unset-key (kbd "M-3"))
 (global-set-key (kbd "M-3") '(lambda() (interactive) (insert-string "#")))
 ;; -----------------------------------------------------------------------------
-
-(set-keyboard-coding-system nil)
