@@ -10,7 +10,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ac-auto-start 1)
- '(ac-modes (quote (text-mode emacs-lisp-mode erlang-mode erlang-shell-mode c-mode cc-mode c++-mode cmake-mode makefile-mode markdown-mode sml-mode inferior-sml-mode ocaml-mode tuareg-mode)))
+ '(ac-modes (quote (text-mode emacs-lisp-mode erlang-mode erlang-shell-mode c-mode cc-mode c++-mode cmake-mode makefile-mode markdown-mode ocaml-mode tuareg-mode)))
  '(clang-format-executable "clang-format-3.5")
  '(clang-format-style "google")
  '(custom-safe-themes (quote ("6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "9eb5269753c507a2b48d74228b32dcfbb3d1dbfd30c66c0efed8218d28b8f0dc" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" default))))
@@ -81,7 +81,7 @@ If the new path's directories does not exist, create them."
                       auto-complete 
 		      tuareg
 		      clang-format
-		      sml-mode
+		      google-c-style
 		      yasnippet
 		      evil 
 		      smart-mode-line)
@@ -171,19 +171,10 @@ If the new path's directories does not exist, create them."
 ;; (autopair-mode)
 ;; (rainbow-delimiters-mode))
 
-;; Sml -------------------------------------------------------------------------
-(add-hook 'sml-mode-hook 'common-hooks)
-(add-hook 'inferior-sml-mode-hook 'common-hooks)
-(defun sml-hooks()
-  (local-set-key (kbd "M-e") 'sml-prog-proc-send-buffer))
-(add-hook 'sml-mode-hook 'sml-hooks)
-
-;; Clojure
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-
 ;; C ---------------------------------------------------------------------------
 (require 'clang-format)
-(setq c-default-style "linux" c-basic-offset 4)
+(add-hook 'c-mode-common-hook 'google-set-c-style)
+(add-hook 'c-mode-common-hook 'google-make-newline-indent)
 
 (defun c-hooks()
   (c-set-offset 'arglist-intro '+)	; aligns args split across lines
