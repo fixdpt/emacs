@@ -10,10 +10,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ac-auto-start 1)
- '(ac-modes (quote (text-mode emacs-lisp-mode erlang-mode erlang-shell-mode c-mode cc-mode c++-mode cmake-mode makefile-mode markdown-mode ocaml-mode tuareg-mode)))
- '(clang-format-executable "clang-format-3.5")
+ '(ac-modes (quote (tex-mode haskell-interactive-mode haskell-mode latex-mode text-mode emacs-lisp-mode erlang-mode erlang-shell-mode c-mode cc-mode c++-mode cmake-mode makefile-mode markdown-mode ocaml-mode tuareg-mode)))
+ '(clang-format-executable "clang-format")
  '(clang-format-style "google")
- '(custom-safe-themes (quote ("6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "9eb5269753c507a2b48d74228b32dcfbb3d1dbfd30c66c0efed8218d28b8f0dc" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" default))))
+ '(custom-safe-themes (quote ("6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "9eb5269753c507a2b48d74228b32dcfbb3d1dbfd30c66c0efed8218d28b8f0dc" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" default)))
+ '(python-shell-interpreter "python3.4"))
 
 ;; -----------------------------------------------------------------------------
 
@@ -76,10 +77,13 @@ If the new path's directories does not exist, create them."
 		      highlight-symbol
                       markdown-mode 
 		      ggtags
+		      edts
 		      erlang 
 		      soft-charcoal-theme
                       auto-complete 
 		      tuareg
+		      python-mode
+		      d-mode
 		      clang-format
 		      google-c-style
 		      yasnippet
@@ -118,13 +122,13 @@ If the new path's directories does not exist, create them."
 (setq TeX-auto-save t)                  
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)           ;set up AUCTeX to deal with
-                                        ;multiple file documents.
+                                       ;multiple file documents.
 
 (setq reftex-plug-into-AUCTeX t)
 
 (setq reftex-label-alist
-   '(("axiom"   ?a "ax:"  "~\\ref{%s}" nil ("axiom"   "ax.") -2)
-     ("theorem" ?h "thr:" "~\\ref{%s}" t   ("theorem" "th.") -3)))
+  '(("axiom"   ?a "ax:"  "~\\ref{%s}" nil ("axiom"   "ax.") -2)
+    ("theorem" ?h "thr:" "~\\ref{%s}" t   ("theorem" "th.") -3)))
 
 (setq reftex-cite-format 'natbib)
 (add-hook 'LaTeX-mode-hook 'reftex-mode)
@@ -185,19 +189,26 @@ If the new path's directories does not exist, create them."
 (add-hook 'c-mode-common-hook 'common-hooks)
 (add-hook 'c-mode-common-hook 'c-hooks)
 
+;; Haskell
+(defun haskell-hooks()
+  (local-set-key (kbd "M-e") 'inferior-haskell-load-and-run))
+
+(add-hook 'haskell-mode-hook 'common-hooks)
+(add-hook 'haskell-mode-hook 'haskell-hooks)
+
+;; D
+(add-hook 'd-mode-hook 'common-hooks)
+
+;; Python
+(add-hook 'python-mode-hook 'common-hooks)
+
+
 ;; Erlang ----------------------------------------------------------------------
 (add-hook 'erlang-mode-hook 'common-hooks)
 (add-hook 'erlang-shell-mode-hook 'common-hooks)
-
-;; Spin
-;; (add-to-list 'load-path "~/.emacs.d/no-elpa/promela-mode")
-;; (require 'promela-mode)
-;; (add-to-list 'auto-mode-alist '("\\.pml\\'" . promela-mode))
-;; (defun promela-hooks() 
-;;   (highlight-symbol-mode)
-;;   (show-paren-mode)
-;;   (rainbow-delimiters-mode))
-;; (add-hook 'promela-mode-hook 'promela-hooks)
+(add-hook 'after-init-hook 'my-after-init-hook)
+(defun my-after-init-hook ()
+  (require 'edts-start))
 
 ;; *****************************************************************************
 ;; Keybindings 
@@ -238,3 +249,9 @@ If the new path's directories does not exist, create them."
 (global-unset-key (kbd "M-3"))
 (global-set-key (kbd "M-3") '(lambda() (interactive) (insert-string "#")))
 ;; -----------------------------------------------------------------------------
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
