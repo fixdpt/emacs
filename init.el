@@ -10,11 +10,14 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ac-auto-start 1)
- '(ac-modes (quote (tex-mode haskell-interactive-mode haskell-mode latex-mode text-mode emacs-lisp-mode erlang-mode erlang-shell-mode c-mode cc-mode c++-mode cmake-mode makefile-mode markdown-mode ocaml-mode tuareg-mode)))
- '(clang-format-executable "clang-format")
+ '(ac-modes
+   (quote
+    (tex-mode go-mode latex-mode texe-mode emacs-lisp-mode erlang-mode erlang-shell-mode c-mode cc-mode c++-mode d-mode java-mode cmake-mode makefile-mode markdown-mode)))
+ '(clang-format-executable "clang-format-3.6")
  '(clang-format-style "google")
- '(custom-safe-themes (quote ("6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "9eb5269753c507a2b48d74228b32dcfbb3d1dbfd30c66c0efed8218d28b8f0dc" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" default)))
- '(python-shell-interpreter "python3.4"))
+ '(custom-safe-themes
+   (quote
+    ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "9eb5269753c507a2b48d74228b32dcfbb3d1dbfd30c66c0efed8218d28b8f0dc" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" default))))
 
 ;; -----------------------------------------------------------------------------
 
@@ -71,7 +74,9 @@ If the new path's directories does not exist, create them."
   (package-refresh-contents))
 
 (defvar my-packages '(magit 
-		      autopair 
+		      autopair
+		      go-mode
+		      go-autocomplete
 		      exec-path-from-shell
                       rainbow-delimiters 
 		      highlight-symbol
@@ -82,8 +87,6 @@ If the new path's directories does not exist, create them."
 		      soft-charcoal-theme
                       auto-complete 
 		      tuareg
-		      python-mode
-		      d-mode
 		      clang-format
 		      google-c-style
 		      yasnippet
@@ -114,6 +117,12 @@ If the new path's directories does not exist, create them."
 (setq ac-auto-show-menu 0.)		; show immediately
 ;; -----------------------------------------------------------------------------
 
+(defun common-hooks() 
+  (highlight-symbol-mode)
+  (autopair-mode)
+  (show-paren-mode)
+  (rainbow-delimiters-mode))
+
 ;; AucTeX ----------------------------------------------------------------------
 (add-to-list 'load-path "~/.emacs.d/no-elpa/auctex")
 (add-to-list 'load-path "~/.emacs.d/no-elpa/auctex/preview")
@@ -132,48 +141,9 @@ If the new path's directories does not exist, create them."
 
 (setq reftex-cite-format 'natbib)
 (add-hook 'LaTeX-mode-hook 'reftex-mode)
-;; -----------------------------------------------------------------------------
-
-(defun common-hooks() 
-  (highlight-symbol-mode)
-  (autopair-mode)
-  (show-paren-mode)
-  (rainbow-delimiters-mode))
 
 ;; markdown
 (add-hook 'markdown-mode-hook 'common-hooks)
-
-;; Ocaml -----------------------------------------------------------------------
-;; opam
-;;(setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
-;;(add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-;;
-;;;; utop
-;;(require 'utop)
-;;(autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
-;;(add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)
-;;(add-hook 'typerex-mode-hook 'utop-setup-ocaml-buffer)
-;;
-;;;; ocp-indent
-;;(require 'ocp-indent)
-;;(defun ocp-indent-buffer ()
-;;  (interactive nil)
-;;  (ocp-indent-region (point-min) (point-max)))
-;;
-;;(defun ocaml-hooks()
-;;  (local-set-key (kbd "M-e") 'tuareg-eval-buffer)
-;;  (local-set-key (kbd "M-/") 'utop-edit-complete)
-;;  (local-set-key (kbd "M-q") 'ocp-indent-buffer))
-;;
-;;(add-hook 'utop-mode-hook 'repl-hooks)
-;;(add-hook 'tuareg-mode-hook 'common-hooks)
-;;(add-hook 'tuareg-mode-hook 'ocaml-hooks)
-;;(add-hook 'tuareg-mode-hook 'common-hooks)
-;;
-;;(defun repl-hooks()
-;; (highlight-symbol-mode)
-;; (autopair-mode)
-;; (rainbow-delimiters-mode))
 
 ;; C ---------------------------------------------------------------------------
 (require 'clang-format)
@@ -189,19 +159,14 @@ If the new path's directories does not exist, create them."
 (add-hook 'c-mode-common-hook 'common-hooks)
 (add-hook 'c-mode-common-hook 'c-hooks)
 
-;; Haskell
-(defun haskell-hooks()
-  (local-set-key (kbd "M-e") 'inferior-haskell-load-and-run))
+;; Java
+(add-hook 'java-mode-hook 'common-hooks)
 
-(add-hook 'haskell-mode-hook 'common-hooks)
-(add-hook 'haskell-mode-hook 'haskell-hooks)
-
-;; D
-(add-hook 'd-mode-hook 'common-hooks)
-
-;; Python
-(add-hook 'python-mode-hook 'common-hooks)
-
+;; Go
+(add-hook 'go-mode-hook 'common-hooks)
+(require 'go-autocomplete)
+(require 'auto-complete-config)
+(add-hook 'before-save-hook #'gofmt-before-save)
 
 ;; Erlang ----------------------------------------------------------------------
 (add-hook 'erlang-mode-hook 'common-hooks)
