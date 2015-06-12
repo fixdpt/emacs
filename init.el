@@ -10,7 +10,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ac-auto-start 1)
- '(ac-modes (quote (text-mode emacs-lisp-mode erlang-mode erlang-shell-mode c-mode cc-mode c++-mode cmake-mode makefile-mode markdown-mode ocaml-mode tuareg-mode)))
+ '(ac-modes (quote (tex-mode TeX-mode go-mode text-mode java-mode emacs-lisp-mode c-mode cc-mode c++-mode makefile-mode markdown-mode )))
  '(clang-format-executable "clang-format-3.5")
  '(clang-format-style "google")
  '(custom-safe-themes (quote ("6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "9eb5269753c507a2b48d74228b32dcfbb3d1dbfd30c66c0efed8218d28b8f0dc" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" default))))
@@ -69,22 +69,30 @@ If the new path's directories does not exist, create them."
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-(defvar my-packages '(magit 
+(defvar my-packages '(
+		      ;; general
+		      magit 
 		      autopair 
 		      exec-path-from-shell
                       rainbow-delimiters 
 		      highlight-symbol
                       markdown-mode 
-		      ggtags
-		      erlang 
 		      soft-charcoal-theme
                       auto-complete 
-		      tuareg
-		      clang-format
-		      google-c-style
 		      yasnippet
 		      evil 
-		      smart-mode-line)
+		      smart-mode-line
+		      ;; C/C++
+		      ggtags
+		      clang-format
+		      google-c-style
+		      ;; Java
+		      javadoc-lookup
+		      java-snippets
+		      maven-test-mode
+		      ;; Go
+		      go-mode
+		      go-autocomplete)
   "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
@@ -136,40 +144,15 @@ If the new path's directories does not exist, create them."
   (show-paren-mode)
   (rainbow-delimiters-mode))
 
-;; markdown
+;; Markdown
 (add-hook 'markdown-mode-hook 'common-hooks)
 
-;; Ocaml -----------------------------------------------------------------------
-;; opam
-;;(setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
-;;(add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-;;
-;;;; utop
-;;(require 'utop)
-;;(autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
-;;(add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)
-;;(add-hook 'typerex-mode-hook 'utop-setup-ocaml-buffer)
-;;
-;;;; ocp-indent
-;;(require 'ocp-indent)
-;;(defun ocp-indent-buffer ()
-;;  (interactive nil)
-;;  (ocp-indent-region (point-min) (point-max)))
-;;
-;;(defun ocaml-hooks()
-;;  (local-set-key (kbd "M-e") 'tuareg-eval-buffer)
-;;  (local-set-key (kbd "M-/") 'utop-edit-complete)
-;;  (local-set-key (kbd "M-q") 'ocp-indent-buffer))
-;;
-;;(add-hook 'utop-mode-hook 'repl-hooks)
-;;(add-hook 'tuareg-mode-hook 'common-hooks)
-;;(add-hook 'tuareg-mode-hook 'ocaml-hooks)
-;;(add-hook 'tuareg-mode-hook 'common-hooks)
-;;
-;;(defun repl-hooks()
-;; (highlight-symbol-mode)
-;; (autopair-mode)
-;; (rainbow-delimiters-mode))
+;; Go
+(require 'go-autocomplete)
+(require 'auto-complete-config)
+(ac-config-default)
+(add-hook 'go-mode-hook 'common-hooks)
+(add-hook 'before-save-hook #'gofmt-before-save)
 
 ;; C ---------------------------------------------------------------------------
 (require 'clang-format)
@@ -185,39 +168,28 @@ If the new path's directories does not exist, create them."
 (add-hook 'c-mode-common-hook 'common-hooks)
 (add-hook 'c-mode-common-hook 'c-hooks)
 
-;; Erlang ----------------------------------------------------------------------
-(add-hook 'erlang-mode-hook 'common-hooks)
-(add-hook 'erlang-shell-mode-hook 'common-hooks)
-
-;; Spin
-;; (add-to-list 'load-path "~/.emacs.d/no-elpa/promela-mode")
-;; (require 'promela-mode)
-;; (add-to-list 'auto-mode-alist '("\\.pml\\'" . promela-mode))
-;; (defun promela-hooks() 
-;;   (highlight-symbol-mode)
-;;   (show-paren-mode)
-;;   (rainbow-delimiters-mode))
-;; (add-hook 'promela-mode-hook 'promela-hooks)
+;; Java
+(defun java-hooks()
+  (maven-test-mode)
+  (local-set-key (kbd "M-?") 'javadoc-lookup)
+  (local-set-key (kbd "M-m") 'maven-test-all))
+(add-hook 'java-mode-hook 'common-hooks)
+(add-hook 'java-mode-hook 'java-hooks)
 
 ;; *****************************************************************************
 ;; Keybindings 
 ;; *****************************************************************************
 
-;; Buffers, info in general
 (global-set-key (kbd "M-f") 'ido-find-file)
 (global-set-key (kbd "M-b") 'ido-switch-buffer)
 (global-set-key (kbd "M-9") 'query-replace)
 (global-set-key (kbd "M-0") 'ack-and-a-half)
-
-;; Packages...
+(global-set-key (kbd "M-m") 'compile)
 (global-set-key (kbd "M-7") 'magit-status)
 (global-set-key (kbd "M--") 'ac-isearch)
-
-;; window stuff
 (global-set-key (kbd "M-1") 'delete-other-windows)
 (global-set-key (kbd "M-+") 'enlarge-window)
 (global-set-key (kbd "M-o") 'other-window)
-(global-set-key (kbd "M-m") 'compile)
 
 ;; Variables
 ;; -----------------------------------------------------------------------------
