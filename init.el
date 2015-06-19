@@ -56,6 +56,7 @@ If the new path's directories does not exist, create them."
 (require 'uniquify)
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+(setq magit-last-seen-setup-instructions "1.4.0")
 
 ;; *****************************************************************************
 ;; Elpa 
