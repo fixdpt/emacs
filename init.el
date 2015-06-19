@@ -173,6 +173,7 @@ If the new path's directories does not exist, create them."
 (defun java-hooks()
   (maven-test-mode)
   (local-set-key (kbd "M-?") 'javadoc-lookup)
+  (local-set-key (kbd "M-p") 'maven-test-toggle-between-test-and-class)
   (local-set-key (kbd "M-m") 'maven-test-all))
 (add-hook 'java-mode-hook 'common-hooks)
 (add-hook 'java-mode-hook 'java-hooks)
