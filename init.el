@@ -10,7 +10,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ac-auto-start 1)
- '(ac-modes (quote (tex-mode TeX-mode go-mode text-mode java-mode emacs-lisp-mode c-mode cc-mode c++-mode makefile-mode markdown-mode )))
+ '(ac-modes (quote (tex-mode groovy-mode TeX-mode go-mode text-mode java-mode emacs-lisp-mode c-mode cc-mode c++-mode makefile-mode markdown-mode )))
  '(clang-format-executable "clang-format-3.5")
  '(clang-format-style "google")
  '(custom-safe-themes
@@ -93,6 +93,8 @@ If the new path's directories does not exist, create them."
 		      javadoc-lookup
 		      java-snippets
 		      maven-test-mode
+		      groovy-mode
+		      gradle-mode
 		      ;; Go
 		      go-mode
 		      go-autocomplete)
@@ -172,12 +174,16 @@ If the new path's directories does not exist, create them."
 
 ;; Java
 (defun java-hooks()
+  (setq c-basic-offset 4
+	tab-width 4
+	indent-tabs-mode nil)
   (maven-test-mode)
   (local-set-key (kbd "M-?") 'javadoc-lookup)
   (local-set-key (kbd "M-p") 'maven-test-toggle-between-test-and-class)
-  (local-set-key (kbd "M-m") 'maven-test-all))
+  (local-set-key (kbd "M-n") 'maven-test-all))
 (add-hook 'java-mode-hook 'common-hooks)
 (add-hook 'java-mode-hook 'java-hooks)
+(add-hook 'groovy-mode-hook 'common-hooks)
 
 ;; Go
 (add-hook 'go-mode-hook 'common-hooks)
