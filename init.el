@@ -85,7 +85,6 @@ If the new path's directories does not exist, create them."
                       markdown-mode 
 		      soft-charcoal-theme
                       auto-complete 
-		      yasnippet
 		      evil 
 		      smart-mode-line
 		      ;; C/C++
@@ -94,10 +93,7 @@ If the new path's directories does not exist, create them."
 		      google-c-style
 		      ;; Java
 		      javadoc-lookup
-		      java-snippets
 		      maven-test-mode
-		      groovy-mode
-		      gradle-mode
 		      puml-mode
 		      ;; Go
 		      go-mode
@@ -114,13 +110,10 @@ If the new path's directories does not exist, create them."
 ;; *****************************************************************************
 ;; Configurations
 ;; *****************************************************************************
-;; (require 'emacs-color-themes)
-;; (load-theme 'soft-charcoal t)
-(load-theme 'hickey t)
+(load-theme 'soft-charcoal t)
 (evil-mode)
 (sml/setup)
 (sml/apply-theme 'dark) 
-(yas-global-mode)
 
 ;; Autocomplete ----------------------------------------------------------------
 (require 'auto-complete-config)
@@ -136,23 +129,23 @@ If the new path's directories does not exist, create them."
   (rainbow-delimiters-mode))
 
 ;; AucTeX ----------------------------------------------------------------------
-(add-to-list 'load-path "~/.emacs.d/no-elpa/auctex")
-(add-to-list 'load-path "~/.emacs.d/no-elpa/auctex/preview")
-(load "auctex.el" nil t t)
-(load "preview-latex.el" nil t t)
-(setq TeX-auto-save t)                  
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)           ;set up AUCTeX to deal with
-                                       ;multiple file documents.
+;; (add-to-list 'load-path "~/.emacs.d/no-elpa/auctex")
+;; (add-to-list 'load-path "~/.emacs.d/no-elpa/auctex/preview")
+;; (load "auctex.el" nil t t)
+;; (load "preview-latex.el" nil t t)
+;; (setq TeX-auto-save t)                  
+;; (setq TeX-parse-self t)
+;; (setq-default TeX-master nil)           ;set up AUCTeX to deal with
+;;                                        ;multiple file documents.
 
-(setq reftex-plug-into-AUCTeX t)
+;; (setq reftex-plug-into-AUCTeX t)
 
-(setq reftex-label-alist
-  '(("axiom"   ?a "ax:"  "~\\ref{%s}" nil ("axiom"   "ax.") -2)
-    ("theorem" ?h "thr:" "~\\ref{%s}" t   ("theorem" "th.") -3)))
+;; (setq reftex-label-alist
+;;   '(("axiom"   ?a "ax:"  "~\\ref{%s}" nil ("axiom"   "ax.") -2)
+;;     ("theorem" ?h "thr:" "~\\ref{%s}" t   ("theorem" "th.") -3)))
 
-(setq reftex-cite-format 'natbib)
-(add-hook 'LaTeX-mode-hook 'reftex-mode)
+;; (setq reftex-cite-format 'natbib)
+;; (add-hook 'LaTeX-mode-hook 'reftex-mode)
 
 ;; Markdown
 (add-hook 'markdown-mode-hook 'common-hooks)
@@ -180,8 +173,8 @@ If the new path's directories does not exist, create them."
 
 ;; Java
 (defun java-hooks()
-  (setq c-basic-offset 4
-	tab-width 4
+  (setq c-basic-offset 2
+	tab-width 2
 	indent-tabs-mode nil)
   (maven-test-mode)
   (local-set-key (kbd "M-?") 'javadoc-lookup)
@@ -190,7 +183,9 @@ If the new path's directories does not exist, create them."
   (local-set-key (kbd "M-n") 'maven-test-all))
 (add-hook 'java-mode-hook 'common-hooks)
 (add-hook 'java-mode-hook 'java-hooks)
-(add-hook 'groovy-mode-hook 'common-hooks)
+
+(javadoc-add-artifacts [junit junit "4.11"]
+		       [com.google.inject guice "4.0"])
 
 ;; PlantUML
 (add-to-list 'auto-mode-alist '("\\.uml\\'" . puml-mode))
@@ -213,7 +208,6 @@ If the new path's directories does not exist, create them."
 (global-set-key (kbd "M-7") 'magit-status)
 (global-set-key (kbd "M--") 'ac-isearch)
 (global-set-key (kbd "M-1") 'delete-other-windows)
-;; (global-set-key (kbd "M-+") 'enlarge-window)
 (global-set-key (kbd "M-o") 'other-window)
 
 ;; Variables
