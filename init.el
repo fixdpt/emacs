@@ -12,7 +12,7 @@
  '(ac-auto-start 1)
  '(ac-modes
    (quote
-    (puml-mode tex-mode groovy-mode TeX-mode go-mode text-mode java-mode emacs-lisp-mode c-mode cc-mode c++-mode makefile-mode markdown-mode)))
+    (puml-mode json-mode tex-mode groovy-mode TeX-mode go-mode text-mode java-mode emacs-lisp-mode c-mode cc-mode c++-mode makefile-mode markdown-mode)))
  '(clang-format-executable "clang-format-3.5")
  '(clang-format-style "google")
  '(custom-safe-themes
@@ -60,6 +60,11 @@ If the new path's directories does not exist, create them."
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (setq magit-last-seen-setup-instructions "1.4.0")
 
+(setq url-proxy-services
+      '(("no_proxy" . "^\\(localhost\\|10.*\\)")
+        ("http" . "web-proxy-br.hpl.hp.com:8080")
+        ("https" . "web-proxy-br.hpl.h.com:8080")))
+
 ;; *****************************************************************************
 ;; Elpa 
 ;; *****************************************************************************
@@ -77,6 +82,7 @@ If the new path's directories does not exist, create them."
 (defvar my-packages '(
 		      ;; general
 		      auto-complete-nxml
+		      json-mode
 		      magit 
 		      autopair 
 		      exec-path-from-shell
@@ -222,7 +228,7 @@ If the new path's directories does not exist, create them."
   )
  ((string-equal system-type "gnu/linux") 
   (progn
-    (set-face-attribute 'default nil :height 170)
+    (set-face-attribute 'default nil :height 200)
     )
   )
  )
