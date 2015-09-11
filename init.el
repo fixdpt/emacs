@@ -172,7 +172,18 @@ If the new path's directories does not exist, create them."
   (c-set-offset 'arglist-intro '+)	; aligns args split across lines
   (ggtags-mode)
   (local-set-key (kbd "M-q") 'clang-format-buffer)
-)
+  )
+
+(add-hook 'c-mode-common-hook
+               (lambda ()
+                (font-lock-add-keywords nil
+					'(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))
+
+(defun special-marks()
+  (font-lock-add-keywords nil
+			  '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))
+  )
+(add-hook 'java-mode-hook 'special-marks)
 
 (add-hook 'c-mode-common-hook 'common-hooks)
 (add-hook 'c-mode-common-hook 'c-hooks)
@@ -191,7 +202,11 @@ If the new path's directories does not exist, create them."
 (add-hook 'java-mode-hook 'java-hooks)
 
 (javadoc-add-artifacts [junit junit "4.11"]
-		       [com.google.inject guice "4.0"])
+		       [com.google.inject guice "4.0"]
+		       [com.typesafe.akka akka-actor_2.10 2.3.13]
+		       [com.typesafe.akka akka-persistence-experimental_2.10 2.3.13]
+		       [com.fasterxml.jackson.core jackson-databind 2.6.1]
+		       [com.fasterxml.jackson.core jackson-core 2.6.1])
 
 ;; PlantUML
 (add-to-list 'auto-mode-alist '("\\.uml\\'" . puml-mode))
