@@ -13,7 +13,7 @@
  '(ac-modes
    (quote
     (puml-mode json-mode tex-mode groovy-mode TeX-mode go-mode text-mode java-mode emacs-lisp-mode c-mode cc-mode c++-mode makefile-mode markdown-mode)))
- '(clang-format-executable "clang-format-3.5")
+ '(clang-format-executable "clang-format-3.6")
  '(clang-format-style "google")
  '(custom-safe-themes
    (quote
@@ -171,6 +171,7 @@ If the new path's directories does not exist, create them."
 (defun c-hooks()
   (c-set-offset 'arglist-intro '+)	; aligns args split across lines
   (ggtags-mode)
+  (local-set-key (kbd "M-?") 'ggtags-find-definition)
   (local-set-key (kbd "M-q") 'clang-format-buffer)
   )
 
@@ -201,12 +202,12 @@ If the new path's directories does not exist, create them."
 (add-hook 'java-mode-hook 'common-hooks)
 (add-hook 'java-mode-hook 'java-hooks)
 
-(javadoc-add-artifacts [junit junit "4.11"]
-		       [com.google.inject guice "4.0"]
-		       [com.typesafe.akka akka-actor_2.10 2.3.13]
-		       [com.typesafe.akka akka-persistence-experimental_2.10 2.3.13]
-		       [com.fasterxml.jackson.core jackson-databind 2.6.1]
-		       [com.fasterxml.jackson.core jackson-core 2.6.1])
+;;(javadoc-add-artifacts [junit junit "4.11"]
+;;		       [com.google.inject guice "4.0"]
+;;		       [com.typesafe.akka akka-actor_2.10 2.3.13]
+;;		       [com.typesafe.akka akka-persistence-experimental_2.10 2.3.13]
+;;		       [com.fasterxml.jackson.core jackson-databind 2.6.1]
+;;		       [com.fasterxml.jackson.core jackson-core 2.6.1])
 
 ;; PlantUML
 (add-to-list 'auto-mode-alist '("\\.uml\\'" . puml-mode))
