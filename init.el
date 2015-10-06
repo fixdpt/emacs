@@ -12,7 +12,7 @@
  '(ac-auto-start 1)
  '(ac-modes
    (quote
-    (puml-mode json-mode tex-mode groovy-mode TeX-mode go-mode text-mode java-mode emacs-lisp-mode c-mode cc-mode c++-mode makefile-mode markdown-mode)))
+    (puml-mode adoc-mode json-mode tex-mode groovy-mode TeX-mode latex-mode go-mode text-mode java-mode emacs-lisp-mode c-mode cc-mode c++-mode makefile-mode markdown-mode)))
  '(clang-format-executable "clang-format-3.6")
  '(clang-format-style "google")
  '(custom-safe-themes
@@ -88,7 +88,8 @@ If the new path's directories does not exist, create them."
 		      exec-path-from-shell
                       rainbow-delimiters 
 		      highlight-symbol
-                      markdown-mode 
+                      markdown-mode
+		      adoc-mode		; ASCII doc
 		      soft-charcoal-theme
                       auto-complete 
 		      evil 
@@ -135,23 +136,23 @@ If the new path's directories does not exist, create them."
   (rainbow-delimiters-mode))
 
 ;; AucTeX ----------------------------------------------------------------------
-;; (add-to-list 'load-path "~/.emacs.d/no-elpa/auctex")
-;; (add-to-list 'load-path "~/.emacs.d/no-elpa/auctex/preview")
-;; (load "auctex.el" nil t t)
-;; (load "preview-latex.el" nil t t)
-;; (setq TeX-auto-save t)                  
-;; (setq TeX-parse-self t)
-;; (setq-default TeX-master nil)           ;set up AUCTeX to deal with
-;;                                        ;multiple file documents.
+(add-to-list 'load-path "~/.emacs.d/no-elpa/auctex")
+(add-to-list 'load-path "~/.emacs.d/no-elpa/auctex/preview")
+(load "auctex.el" nil t t)
+(load "preview-latex.el" nil t t)
+(setq TeX-auto-save t)                  
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)           ;set up AUCTeX to deal with
+                                       ;multiple file documents.
 
-;; (setq reftex-plug-into-AUCTeX t)
+(setq reftex-plug-into-AUCTeX t)
 
-;; (setq reftex-label-alist
-;;   '(("axiom"   ?a "ax:"  "~\\ref{%s}" nil ("axiom"   "ax.") -2)
-;;     ("theorem" ?h "thr:" "~\\ref{%s}" t   ("theorem" "th.") -3)))
+(setq reftex-label-alist
+  '(("axiom"   ?a "ax:"  "~\\ref{%s}" nil ("axiom"   "ax.") -2)
+    ("theorem" ?h "thr:" "~\\ref{%s}" t   ("theorem" "th.") -3)))
 
-;; (setq reftex-cite-format 'natbib)
-;; (add-hook 'LaTeX-mode-hook 'reftex-mode)
+(setq reftex-cite-format 'natbib)
+(add-hook 'LaTeX-mode-hook 'reftex-mode)
 
 ;; Markdown
 (add-hook 'markdown-mode-hook 'common-hooks)
@@ -201,6 +202,9 @@ If the new path's directories does not exist, create them."
   (local-set-key (kbd "M-n") 'maven-test-all))
 (add-hook 'java-mode-hook 'common-hooks)
 (add-hook 'java-mode-hook 'java-hooks)
+
+;; ASCII doc
+(add-to-list 'auto-mode-alist '("\\.doc\\'" . adoc-mode))
 
 ;;(javadoc-add-artifacts [junit junit "4.11"]
 ;;		       [com.google.inject guice "4.0"]
