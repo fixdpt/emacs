@@ -62,8 +62,8 @@ If the new path's directories does not exist, create them."
 
 (setq url-proxy-services
       '(("no_proxy" . "^\\(localhost\\|10.*\\)")
-        ("http" . "web-proxy-br.hpl.hp.com:8080")
-        ("https" . "web-proxy-br.hpl.h.com:8080")))
+        ("http" . "web-proxy-br.labs.hpecorp.net:8080")
+        ("https" . "web-proxy-br.labs.hpecorp.net:8080")))
 
 ;; *****************************************************************************
 ;; Elpa 
@@ -90,6 +90,7 @@ If the new path's directories does not exist, create them."
 		      highlight-symbol
                       markdown-mode
 		      adoc-mode		; ASCII doc
+		      ;; puml-mode 	; PlantUML 
 		      soft-charcoal-theme
                       auto-complete 
 		      evil 
@@ -97,14 +98,7 @@ If the new path's directories does not exist, create them."
 		      ;; C/C++
 		      ggtags
 		      clang-format
-		      google-c-style
-		      ;; Java
-		      javadoc-lookup
-		      maven-test-mode
-		      puml-mode
-		      ;; Go
-		      go-mode
-		      go-autocomplete)
+		      google-c-style)
   "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
@@ -135,34 +129,8 @@ If the new path's directories does not exist, create them."
   (show-paren-mode)
   (rainbow-delimiters-mode))
 
-;; AucTeX ----------------------------------------------------------------------
-(add-to-list 'load-path "~/.emacs.d/no-elpa/auctex")
-(add-to-list 'load-path "~/.emacs.d/no-elpa/auctex/preview")
-(load "auctex.el" nil t t)
-(load "preview-latex.el" nil t t)
-(setq TeX-auto-save t)                  
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)           ;set up AUCTeX to deal with
-                                       ;multiple file documents.
-
-(setq reftex-plug-into-AUCTeX t)
-
-(setq reftex-label-alist
-  '(("axiom"   ?a "ax:"  "~\\ref{%s}" nil ("axiom"   "ax.") -2)
-    ("theorem" ?h "thr:" "~\\ref{%s}" t   ("theorem" "th.") -3)))
-
-(setq reftex-cite-format 'natbib)
-(add-hook 'LaTeX-mode-hook 'reftex-mode)
-
 ;; Markdown
 (add-hook 'markdown-mode-hook 'common-hooks)
-
-;; Go
-(require 'go-autocomplete)
-(require 'auto-complete-config)
-(ac-config-default)
-(add-hook 'go-mode-hook 'common-hooks)
-(add-hook 'before-save-hook #'gofmt-before-save)
 
 ;; C ---------------------------------------------------------------------------
 (require 'clang-format)
@@ -185,42 +153,14 @@ If the new path's directories does not exist, create them."
   (font-lock-add-keywords nil
 			  '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))
   )
-(add-hook 'java-mode-hook 'special-marks)
-
 (add-hook 'c-mode-common-hook 'common-hooks)
 (add-hook 'c-mode-common-hook 'c-hooks)
-
-;; Java
-(defun java-hooks()
-  (setq c-basic-offset 2
-	tab-width 2
-	indent-tabs-mode nil)
-  (maven-test-mode)
-  (local-set-key (kbd "M-?") 'javadoc-lookup)
-  (local-set-key (kbd "M-+") 'add-java-import)
-  (local-set-key (kbd "M-p") 'maven-test-toggle-between-test-and-class)
-  (local-set-key (kbd "M-n") 'maven-test-all))
-(add-hook 'java-mode-hook 'common-hooks)
-(add-hook 'java-mode-hook 'java-hooks)
 
 ;; ASCII doc
 (add-to-list 'auto-mode-alist '("\\.doc\\'" . adoc-mode))
 
-;;(javadoc-add-artifacts [junit junit "4.11"]
-;;		       [com.google.inject guice "4.0"]
-;;		       [com.typesafe.akka akka-actor_2.10 2.3.13]
-;;		       [com.typesafe.akka akka-persistence-experimental_2.10 2.3.13]
-;;		       [com.fasterxml.jackson.core jackson-databind 2.6.1]
-;;		       [com.fasterxml.jackson.core jackson-core 2.6.1])
-
 ;; PlantUML
 (add-to-list 'auto-mode-alist '("\\.uml\\'" . puml-mode))
-
-;; Go
-(add-hook 'go-mode-hook 'common-hooks)
-(require 'go-autocomplete)
-(require 'auto-complete-config)
-(add-hook 'before-save-hook #'gofmt-before-save)
 
 ;; *****************************************************************************
 ;; Keybindings 
