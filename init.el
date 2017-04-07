@@ -12,12 +12,13 @@
  '(ac-auto-start 1)
  '(ac-modes
    (quote
-    (puml-mode adoc-mode json-mode tex-mode groovy-mode TeX-mode latex-mode go-mode text-mode java-mode emacs-lisp-mode c-mode cc-mode c++-mode makefile-mode markdown-mode)))
- '(clang-format-executable "clang-format-3.6")
- '(clang-format-style "google")
+    (json-mode text-mode java-mode emacs-lisp-mode c-mode cc-mode c++-mode makefile-mode)))
  '(custom-safe-themes
    (quote
-    ("de309af2ced9914b67077eecd0b89412dd9a60c5eb823e5c5ed66170bd4495a7" "3cc2385c39257fed66238921602d8104d8fd6266ad88a006d0a4325336f5ee02" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "96998f6f11ef9f551b427b8853d947a7857ea5a578c75aa9c4e7c73fe04d10b4" "b3775ba758e7d31f3bb849e7c9e48ff60929a792961a2d536edec8f68c671ca5" "3d5ef3d7ed58c9ad321f05360ad8a6b24585b9c49abcee67bdcbb0fe583a6950" "e9776d12e4ccb722a2a732c6e80423331bcb93f02e089ba2a4b02e85de1cf00e" "46fd293ff6e2f6b74a5edf1063c32f2a758ec24a5f63d13b07a20255c074d399" "58c6711a3b568437bab07a30385d34aacf64156cc5137ea20e799984f4227265" "0c29db826418061b40564e3351194a3d4a125d182c6ee5178c237a7364f0ff12" "72a81c54c97b9e5efcc3ea214382615649ebb539cb4f2fe3a46cd12af72c7607" "7bde52fdac7ac54d00f3d4c559f2f7aa899311655e7eb20ec5491f3b5c533fe8" "603a9c7f3ca3253cb68584cb26c408afcf4e674d7db86badcfe649dd3c538656" "40bc0ac47a9bd5b8db7304f8ef628d71e2798135935eb450483db0dbbfff8b11" "bdaab014ec6785f64b72efbea80808b762d8971247aacf2ffc6b76a39b9ed97c" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "9eb5269753c507a2b48d74228b32dcfbb3d1dbfd30c66c0efed8218d28b8f0dc" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" default))))
+    ("de309af2ced9914b67077eecd0b89412dd9a60c5eb823e5c5ed66170bd4495a7" "3cc2385c39257fed66238921602d8104d8fd6266ad88a006d0a4325336f5ee02" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "96998f6f11ef9f551b427b8853d947a7857ea5a578c75aa9c4e7c73fe04d10b4" "b3775ba758e7d31f3bb849e7c9e48ff60929a792961a2d536edec8f68c671ca5" "3d5ef3d7ed58c9ad321f05360ad8a6b24585b9c49abcee67bdcbb0fe583a6950" "e9776d12e4ccb722a2a732c6e80423331bcb93f02e089ba2a4b02e85de1cf00e" "46fd293ff6e2f6b74a5edf1063c32f2a758ec24a5f63d13b07a20255c074d399" "58c6711a3b568437bab07a30385d34aacf64156cc5137ea20e799984f4227265" "0c29db826418061b40564e3351194a3d4a125d182c6ee5178c237a7364f0ff12" "72a81c54c97b9e5efcc3ea214382615649ebb539cb4f2fe3a46cd12af72c7607" "7bde52fdac7ac54d00f3d4c559f2f7aa899311655e7eb20ec5491f3b5c533fe8" "603a9c7f3ca3253cb68584cb26c408afcf4e674d7db86badcfe649dd3c538656" "40bc0ac47a9bd5b8db7304f8ef628d71e2798135935eb450483db0dbbfff8b11" "bdaab014ec6785f64b72efbea80808b762d8971247aacf2ffc6b76a39b9ed97c" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "9eb5269753c507a2b48d74228b32dcfbb3d1dbfd30c66c0efed8218d28b8f0dc" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" default)))
+ '(package-selected-packages
+   (quote
+    (smart-mode-line evil soft-charcoal-theme highlight-symbol rainbow-delimiters exec-path-from-shell autopair magit json-mode auto-complete-nxml))))
 
 ;; -----------------------------------------------------------------------------
 
@@ -60,11 +61,6 @@ If the new path's directories does not exist, create them."
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (setq magit-last-seen-setup-instructions "1.4.0")
 
-(setq url-proxy-services
-      '(("no_proxy" . "^\\(localhost\\|10.*\\)")
-        ("http" . "web-proxy-br.labs.hpecorp.net:8080")
-        ("https" . "web-proxy-br.labs.hpecorp.net:8080")))
-
 ;; *****************************************************************************
 ;; Elpa 
 ;; *****************************************************************************
@@ -86,19 +82,12 @@ If the new path's directories does not exist, create them."
 		      magit 
 		      autopair 
 		      exec-path-from-shell
-                      rainbow-delimiters 
+          rainbow-delimiters 
 		      highlight-symbol
-                      markdown-mode
-		      adoc-mode		; ASCII doc
-		      ;; puml-mode 	; PlantUML 
 		      soft-charcoal-theme
-                      auto-complete 
+          auto-complete 
 		      evil 
-		      smart-mode-line
-		      ;; C/C++
-		      ggtags
-		      clang-format
-		      google-c-style)
+		      smart-mode-line)
   "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
@@ -133,34 +122,8 @@ If the new path's directories does not exist, create them."
 (add-hook 'markdown-mode-hook 'common-hooks)
 
 ;; C ---------------------------------------------------------------------------
-(require 'clang-format)
-(add-hook 'c-mode-common-hook 'google-set-c-style)
-(add-hook 'c-mode-common-hook 'google-make-newline-indent)
-
-(defun c-hooks()
-  (c-set-offset 'arglist-intro '+)	; aligns args split across lines
-  (ggtags-mode)
-  (local-set-key (kbd "M-?") 'ggtags-find-definition)
-  (local-set-key (kbd "M-q") 'clang-format-buffer)
-  )
-
-(add-hook 'c-mode-common-hook
-               (lambda ()
-                (font-lock-add-keywords nil
-					'(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))
-
-(defun special-marks()
-  (font-lock-add-keywords nil
-			  '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))
-  )
 (add-hook 'c-mode-common-hook 'common-hooks)
-(add-hook 'c-mode-common-hook 'c-hooks)
-
-;; ASCII doc
-(add-to-list 'auto-mode-alist '("\\.doc\\'" . adoc-mode))
-
-;; PlantUML
-(add-to-list 'auto-mode-alist '("\\.uml\\'" . puml-mode))
+(add-hook 'java-mode-hook 'common-hooks)
 
 ;; *****************************************************************************
 ;; Keybindings 
